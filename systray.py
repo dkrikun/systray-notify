@@ -3,6 +3,11 @@
 #sip.setapi('QVariant', 2)
 
 from PySide import QtCore, QtGui
+import time
+
+import zmq
+from api_pb2 import *
+import sys
 
 #import systray_rc
 
@@ -35,6 +40,27 @@ class Window(QtGui.QDialog):
 
         self.setWindowTitle("Systray")
         self.resize(400, 300)
+
+        self.timer = QtCore.QTimer(self)
+        self.timer.timeout.connect(self.go)
+        self.timer.start(1)
+
+        self.zctx = zmq.Context()
+        self.zsck = self.zctx.socket(zmq.PULL)
+        self.zsck.bind("tcp://*:7272")
+
+    def go(self):
+        try:
+            zmsg = self.zsck.recv(zmq.NOBLOCK)
+        except zmq.ZMQError as e:
+            if e.errno != zmq.EAGAIN:
+                raise
+            return
+
+        api_msg = Api()
+        api_msg.ParseFromString(zmsg)
+        self.showMessageText(api_msg.desc)
+
 
     def setVisible(self, visible):
         self.minimizeAction.setEnabled(visible)
@@ -72,6 +98,13 @@ class Window(QtGui.QDialog):
         self.trayIcon.showMessage(self.titleEdit.text(),
                 self.bodyEdit.toPlainText(), icon,
                 self.durationSpinBox.value() * 1000)
+
+    def showMessageText(self,desc):
+        icon = QtGui.QSystemTrayIcon.MessageIcon(0)
+        self.trayIcon.showMessage(desc,
+                self.bodyEdit.toPlainText(), icon,
+                self.durationSpinBox.value() * 1000)
+
 
     def messageClicked(self):
         QtGui.QMessageBox.information(None, "Systray",
@@ -193,7 +226,9 @@ if __name__ == '__main__':
 
     QtGui.QApplication.setQuitOnLastWindowClosed(False)
 
+
     window = Window()
     window.show()
+
 
     sys.exit(app.exec_())
