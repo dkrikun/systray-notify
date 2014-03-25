@@ -13,7 +13,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='api.proto',
   package='',
-  serialized_pb='\n\tapi.proto\"\x13\n\x03\x41pi\x12\x0c\n\x04\x64\x65sc\x18\x01 \x01(\t')
+  serialized_pb='\n\tapi.proto\"\"\n\x03\x41pi\x12\r\n\x05title\x18\x01 \x01(\t\x12\x0c\n\x04\x62ody\x18\x02 \x01(\t')
 
 
 
@@ -26,8 +26,15 @@ _API = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='desc', full_name='Api.desc', index=0,
+      name='title', full_name='Api.title', index=0,
       number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='body', full_name='Api.body', index=1,
+      number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -42,7 +49,7 @@ _API = _descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=13,
-  serialized_end=32,
+  serialized_end=47,
 )
 
 DESCRIPTOR.message_types_by_name['Api'] = _API

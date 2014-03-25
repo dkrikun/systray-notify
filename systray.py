@@ -56,7 +56,8 @@ class Window(QtGui.QDialog):
 
         api_msg = Api()
         api_msg.ParseFromString(zmsg)
-        self.showMessageText(api_msg.desc)
+        self.showMessageText(api_msg.title)
+        self.showMessageText(api_msg.body)
 
 
     def showMessageText(self,desc):

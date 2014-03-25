@@ -1,5 +1,6 @@
 
 message Api
 {
-    optional string desc = 1;
+    optional string title = 1;
+    optional string body = 2;
 }
