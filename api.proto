@@ -1,6 +1,9 @@
 
 message Api
 {
+    enum MessageIcon { NO = 0; INFO = 1; WARN = 2; CRIT = 3; }
+
     optional string title = 1;
     optional string body = 2;
+    optional MessageIcon icon = 3 [ default = NO ];
 }

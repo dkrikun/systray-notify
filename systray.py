@@ -31,6 +31,7 @@ class Window(QtGui.QDialog):
         self.trayIcon = QtGui.QSystemTrayIcon(self)
         self.trayIcon.setContextMenu(self.trayIconMenu)
         icon = QtGui.QIcon(':/images/heart.svg')
+
         self.trayIcon.setIcon(icon)
         self.trayIcon.setToolTip("atooltip")
         self.trayIcon.messageClicked.connect(self.messageClicked)
@@ -56,13 +57,21 @@ class Window(QtGui.QDialog):
 
         api_msg = Api()
         api_msg.ParseFromString(zmsg)
-        self.showMessageText(api_msg.title)
-        self.showMessageText(api_msg.body)
+
+        if api_msg.icon == Api.NO:
+            icon = QtGui.QSystemTrayIcon.NoIcon
+        elif api_msg.icon == Api.INFO:
+            icon = QtGui.QSystemTrayIcon.Information
+        elif api_msg.icon == Api.WARN:
+            icon = QtGui.QSystemTrayIcon.Warning
+        elif api_msg.icon == Api.CRIT:
+            icon = QtGui.QSystemTrayIcon.Critical
+
+        self.showMessageText(api_msg.title, api_msg.body, icon)
 
 
-    def showMessageText(self,desc):
-        icon = QtGui.QSystemTrayIcon.MessageIcon(0)
-        self.trayIcon.showMessage(desc, "some text here", icon, 1000)
+    def showMessageText(self, title, body, icon):
+        self.trayIcon.showMessage(title, body, icon, 10)
 
 
     def messageClicked(self):

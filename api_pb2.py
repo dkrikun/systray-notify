@@ -13,9 +13,38 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='api.proto',
   package='',
-  serialized_pb='\n\tapi.proto\"\"\n\x03\x41pi\x12\r\n\x05title\x18\x01 \x01(\t\x12\x0c\n\x04\x62ody\x18\x02 \x01(\t')
+  serialized_pb='\n\tapi.proto\"{\n\x03\x41pi\x12\r\n\x05title\x18\x01 \x01(\t\x12\x0c\n\x04\x62ody\x18\x02 \x01(\t\x12\"\n\x04icon\x18\x03 \x01(\x0e\x32\x10.Api.MessageIcon:\x02NO\"3\n\x0bMessageIcon\x12\x06\n\x02NO\x10\x00\x12\x08\n\x04INFO\x10\x01\x12\x08\n\x04WARN\x10\x02\x12\x08\n\x04\x43RIT\x10\x03')
 
 
+
+_API_MESSAGEICON = _descriptor.EnumDescriptor(
+  name='MessageIcon',
+  full_name='Api.MessageIcon',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='NO', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='INFO', index=1, number=1,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='WARN', index=2, number=2,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CRIT', index=3, number=3,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=85,
+  serialized_end=136,
+)
 
 
 _API = _descriptor.Descriptor(
@@ -39,19 +68,29 @@ _API = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='icon', full_name='Api.icon', index=2,
+      number=3, type=14, cpp_type=8, label=1,
+      has_default_value=True, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
+    _API_MESSAGEICON,
   ],
   options=None,
   is_extendable=False,
   extension_ranges=[],
   serialized_start=13,
-  serialized_end=47,
+  serialized_end=136,
 )
 
+_API.fields_by_name['icon'].enum_type = _API_MESSAGEICON
+_API_MESSAGEICON.containing_type = _API;
 DESCRIPTOR.message_types_by_name['Api'] = _API
 
 class Api(_message.Message):

@@ -16,8 +16,9 @@ while cmd != 'q':
         cmd = msvcrt.getch()
 
         api_msg = Api()
-        api_msg.title = 'a title'
-        api_msg.body = 'a message'
+        api_msg.title = 'Nushi!'
+        api_msg.body = 'I luv U'
+        api_msg.icon = Api.INFO
 
         zsck.send(api_msg.SerializeToString(), zmq.NOBLOCK)
         time.sleep(1)
