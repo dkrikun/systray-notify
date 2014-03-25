@@ -9,7 +9,7 @@ import zmq
 from api_pb2 import *
 import sys
 
-#import systray_rc
+import systray_rc
 
 
 class Window(QtGui.QDialog):
