@@ -3,8 +3,9 @@ from cx_Freeze import setup, Executable
 # cx_Freeze options
 buildOptions = dict(
         packages = ['zmq', 'zmq.backend.cython'],
+        excludes = ['PySide.QtNetwork'],
         includes = 'atexit',
-        append_script_to_exe = True,
+        append_script_to_exe = False,
         include_msvcr = True
         )
 
