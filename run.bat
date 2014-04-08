@@ -1,4 +1,3 @@
 @echo off
 cd %~dp0\build\exe.win-amd64-2.7
-systray
-pause
+start /b systray
