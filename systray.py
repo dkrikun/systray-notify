@@ -9,7 +9,7 @@ import zmq
 from api_pb2 import *
 import sys
 
-import systray_rc
+import icon_rc
 
 
 class Window(QtGui.QDialog):
@@ -30,7 +30,7 @@ class Window(QtGui.QDialog):
         # tray icon
         self.trayIcon = QtGui.QSystemTrayIcon(self)
         self.trayIcon.setContextMenu(self.trayIconMenu)
-        icon = QtGui.QIcon(':/images/heart.svg')
+        icon = QtGui.QIcon(':/heart.svg')
 
         self.trayIcon.setIcon(icon)
         self.trayIcon.setToolTip("atooltip")
