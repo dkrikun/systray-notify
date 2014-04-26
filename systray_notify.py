@@ -26,6 +26,7 @@ import icon_rc
 #
 ICON_SELECTOR = ':/icon.png'
 CAPTION = 'Notifications service'
+DEFAULT_ADDRESS = 'tcp://*:7272'
 
 class Window(QtGui.QDialog):
     def __init__(self, address, tooltip):
@@ -45,7 +46,7 @@ class Window(QtGui.QDialog):
         # tray icon
         self.trayIcon = QtGui.QSystemTrayIcon(self)
         self.trayIcon.setContextMenu(self.trayIconMenu)
-        icon = QtGui.QIcon(':/icon.png')
+        icon = QtGui.QIcon(ICON_SELECTOR)
 
         self.trayIcon.setIcon(icon)
         self.trayIcon.setToolTip(tooltip)
@@ -140,7 +141,7 @@ def parse_cmdline_args():
     parser.add_argument('--version', action='version',
                         version='%(prog)s {}'.format(__version__))
 
-    parser.add_argument('-a', '--address', default='tcp://*:7272',
+    parser.add_argument('-a', '--address', default=DEFAULT_ADDRESS,
             help='endpoint address to listen to for incoming requests')
     parser.add_argument('-t', '--tooltip', default=CAPTION,
             help='tooltip text to display')
