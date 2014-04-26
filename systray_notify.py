@@ -55,7 +55,7 @@ class Window(QtGui.QDialog):
         # timer to check incoming messages
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.recvMessages)
-        self.timer.start(1)
+        self.timer.start(5)
 
         self.zctx = zmq.Context()
         self.zsck = self.zctx.socket(zmq.PULL)
