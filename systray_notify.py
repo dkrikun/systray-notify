@@ -19,6 +19,13 @@ from api_pb2 import *
 
 import icon_rc
 
+# icon resource selector
+# note that currently the icon cannot be selected dynamically, but rather
+# it has to be processed by the resource compiler first,
+# run `build.bat` to do that
+#
+ICON_SELECTOR = ':/icon.png'
+CAPTION = 'Notifications service'
 
 class Window(QtGui.QDialog):
     def __init__(self, address, tooltip):
@@ -38,7 +45,7 @@ class Window(QtGui.QDialog):
         # tray icon
         self.trayIcon = QtGui.QSystemTrayIcon(self)
         self.trayIcon.setContextMenu(self.trayIconMenu)
-        icon = QtGui.QIcon(':/heart.svg')
+        icon = QtGui.QIcon(':/icon.png')
 
         self.trayIcon.setIcon(icon)
         self.trayIcon.setToolTip(tooltip)
@@ -135,11 +142,13 @@ def parse_cmdline_args():
 
     parser.add_argument('-a', '--address', default='tcp://*:7272',
             help='endpoint address to listen to for incoming requests')
-    parser.add_argument('-t', '--tooltip', default='Notifications service',
+    parser.add_argument('-t', '--tooltip', default=CAPTION,
             help='tooltip text to display')
     return parser.parse_args()
 
-if __name__ == '__main__':
+
+def main():
+    """Main here."""
 
     args = parse_cmdline_args()
     app = QtGui.QApplication(sys.argv)
@@ -148,12 +157,17 @@ if __name__ == '__main__':
     systray_ok = QtGui.QSystemTrayIcon.isSystemTrayAvailable() and QtGui.QSystemTrayIcon.supportsMessages()
 
     if not systray_ok:
-        QtGui.QMessageBox.critical(None, "systray-notify",
+        QtGui.QMessageBox.critical(None, CAPTION,
                 """Could not start systray-notify because the system tray
                 messages are not supported""")
         sys.exit(1)
 
-
+    # must set this, otherwise, will close upon click on a message box ok
+    # button (why so? dunno!)
     QtGui.QApplication.setQuitOnLastWindowClosed(False)
+
     window = Window(args.address, args.tooltip)
     sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    sys.exit(main())
