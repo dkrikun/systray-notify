@@ -1,9 +1,12 @@
 @echo off
 
+title systray-notify setup.bat
+echo working
+
 pushd %~dp0
 
-rd build >nul 2>&1
-rd dist >nul 2>&1
+rd /S /Q build >nul 2>&1
+rd /S /Q dist >nul 2>&1
 
 rem generate protobuf code
 protoc --python_out=. api.proto
