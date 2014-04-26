@@ -6,6 +6,7 @@ message Api
     optional string title = 1;
     optional string body = 2;
     optional MessageIcon icon = 3 [ default = NO ];
+    optional string extended_info = 4;
 
     // if set, systray-notify will shut down
     optional bool die = 10;

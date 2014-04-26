@@ -61,7 +61,7 @@ class Window(QtGui.QDialog):
         api_msg.ParseFromString(zmsg)
 
         # check if requested to shut down
-        if api_msg.die == True:
+        if api_msg.die:
             QtGui.qApp.quit()
 
         # select appropriate icon to display in the system tray message
@@ -74,27 +74,51 @@ class Window(QtGui.QDialog):
         elif api_msg.icon == Api.CRIT:
             icon = QtGui.QSystemTrayIcon.Critical
 
-        # display the balloon message in the system tray
-        self.showTrayMessage(api_msg.title, api_msg.body, icon)
+        # save last recved Api message so that it can be used in
+        # `messageClicked` handler
+        self.api_msg = api_msg
 
+        # if a message has extended info, it will be shown in a message box
+        # provided the user clicks on the balloon message
+        #
+        # add a hint that the baloon message is clickable
+        has_extended_info = api_msg.HasField('extended_info')
+        body = api_msg.body
+        if has_extended_info:
+            body = body + '\n\nClick for detailed info'
+
+        # display the balloon message in the system tray
+        self.showTrayMessage(api_msg.title, body, icon)
 
     def messageClicked(self):
-        self.hideTrayMessage()
+        """On click handler for the balloon message tooltip.
+
+        If `extended_info` has not been set, does nothing.
+        Otherwise, displays a message box containing title, body and extened
+        info."""
+
+        has_extended_info = self.api_msg.HasField('extended_info')
+        if not has_extended_info:
+            return
+
+        title = self.api_msg.title
+        body = self.api_msg.body + '\n\n' + self.api_msg.extended_info
+
+        if self.api_msg.icon == Api.NO or self.api_msg.icon == Api.INFO:
+            QtGui.QMessageBox.information(None, title, body)
+        elif self.api_msg.icon == Api.WARN:
+            QtGui.QMessageBox.warning(None, title, body)
+        elif self.api_msg.icon == Api.CRIT:
+            QtGui.QMessageBox.critical(None, title, body)
 
     def showTrayMessage(self, title, body, icon):
         self.trayIcon.showMessage(title, body, icon, 10)
-
-    def hideTrayMessage(self):
-        """Hides a balloon message being displayed, if there is one."""
-
-        self.trayIcon.hide()
-        self.trayIcon.show()
-
 
 
 if __name__ == '__main__':
 
     import sys
+    app = QtGui.QApplication(sys.argv)
 
     # test for systray functionality
     systray_ok = QtGui.QSystemTrayIcon.isSystemTrayAvailable() and QtGui.QSystemTrayIcon.supportsMessages()
@@ -106,6 +130,6 @@ if __name__ == '__main__':
         sys.exit(1)
 
 
-    app = QtGui.QApplication(sys.argv)
+    QtGui.QApplication.setQuitOnLastWindowClosed(False)
     window = Window()
     sys.exit(app.exec_())
