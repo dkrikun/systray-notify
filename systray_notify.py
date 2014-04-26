@@ -28,7 +28,7 @@ class Window(QtGui.QDialog):
         self.hide()
 
         # actions
-        self.quitAction = QtGui.QAction("&Quit", self,
+        self.quitAction = QtGui.QAction("&Exit", self,
                 triggered=QtGui.qApp.quit)
 
         # tray icon menu
@@ -135,7 +135,7 @@ def parse_cmdline_args():
 
     parser.add_argument('-a', '--address', default='tcp://*:7272',
             help='endpoint address to listen to for incoming requests')
-    parser.add_argument('-t', '--tooltip', default='systray-notify',
+    parser.add_argument('-t', '--tooltip', default='Notifications service',
             help='tooltip text to display')
     return parser.parse_args()
 
