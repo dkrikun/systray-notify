@@ -1,4 +1,29 @@
-# cx_Freeze zmq + protobuf script
+systray-notify
+=============
+
+Tiny 'microservice' which knows to display user-friendly notifications using
+the system tray.
+
+# What it is good for?
+
+It is handy in situations when you have a number of UI-less applications
+working together, which may want to display user-friendly not so technical
+messages.
+Plays well with 'microservice architecture' (see the article by Martin Fowler).
+
+# API
+
+The API is provided using Google Protobuf over zeromq.
+The message structure is defined in `api.proto`.
+The socket type used to receive the messages is `ZMQ_PULL`, a request is
+processed each 300 msec.
+
+# Supported platforms
+
+Currently *tested* only on Windows 7 with Python 2.7
+
+
+# cx_Freeze zmq + protobuf script workaround
 
 ### zmq
 
@@ -23,3 +48,4 @@ too. Steps to work around the problem are:
     then to `google` folder therein, and create empty file `__init__.py`.
     3. Open python interactive interpreter (i.e `python.exe` from the command-line)
     and invoke `import google`, press enter, then Ctrl-Z to exit.
+
