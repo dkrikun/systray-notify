@@ -155,7 +155,8 @@ def main():
     app = QtGui.QApplication(sys.argv)
 
     # test for systray functionality
-    systray_ok = QtGui.QSystemTrayIcon.isSystemTrayAvailable() and QtGui.QSystemTrayIcon.supportsMessages()
+    systray_ok = QtGui.QSystemTrayIcon.isSystemTrayAvailable() and \
+            QtGui.QSystemTrayIcon.supportsMessages()
 
     if not systray_ok:
         QtGui.QMessageBox.critical(None, CAPTION,
