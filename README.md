@@ -1,7 +1,7 @@
 systray-notify
 =============
 
-Tiny 'microservice' which knows to display user-friendly notifications using
+Tiny *microservice* which knows to display user-friendly notifications using
 the system tray.
 
 ### What it is good for?
@@ -9,7 +9,7 @@ the system tray.
 It is handy in situations when you have a number of UI-less applications
 working together, which may want to display user-friendly not so technical
 messages.
-Plays well with 'microservice architecture' (see the article by Martin Fowler).
+Plays well with *microservice architecture* (see the [article][1] by Martin Fowler).
 
 ### API
 
@@ -49,3 +49,4 @@ too. Steps to work around the problem are:
     3. Open python interactive interpreter (i.e `python.exe` from the command-line)
     and invoke `import google`, press enter, then Ctrl-Z to exit.
 
+1: http://martinfowler.com/articles/microservices.html
