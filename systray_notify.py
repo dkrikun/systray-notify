@@ -1,17 +1,27 @@
-# This is only needed for Python v2 but is harmless for Python v3.
+#!/usr/bin/env python
+# coding: utf-8
+
+"""
+Micro-service to display user-friendly notifications using the system tray.
+"""
+
+__version__ = '0.1.0'
+__author__ = 'Daniel Krikun'
+__license__= 'MIT'
+
+import time
+import sys
+import argparse
 
 from PySide import QtCore, QtGui
-import time
-
 import zmq
 from api_pb2 import *
-import sys
 
 import icon_rc
 
 
 class Window(QtGui.QDialog):
-    def __init__(self):
+    def __init__(self, address, tooltip):
         super(Window, self).__init__()
 
         # hide the window
@@ -31,7 +41,7 @@ class Window(QtGui.QDialog):
         icon = QtGui.QIcon(':/heart.svg')
 
         self.trayIcon.setIcon(icon)
-        self.trayIcon.setToolTip("atooltip")
+        self.trayIcon.setToolTip(tooltip)
         self.trayIcon.messageClicked.connect(self.messageClicked)
         self.trayIcon.show()
 
@@ -42,7 +52,7 @@ class Window(QtGui.QDialog):
 
         self.zctx = zmq.Context()
         self.zsck = self.zctx.socket(zmq.PULL)
-        self.zsck.bind("tcp://*:7272")
+        self.zsck.bind(address)
 
 
     def recvMessages(self):
@@ -114,10 +124,24 @@ class Window(QtGui.QDialog):
     def showTrayMessage(self, title, body, icon):
         self.trayIcon.showMessage(title, body, icon, 10)
 
+def parse_cmdline_args():
+    """Parse command-line arguments."""
+
+    parser = argparse.ArgumentParser(description='Micro-service to display'
+                                     ' user-friendly notifications using the '
+                                     'system tray')
+    parser.add_argument('--version', action='version',
+                        version='%(prog)s {}'.format(__version__))
+
+    parser.add_argument('-a', '--address', default='tcp://*:7272',
+            help='endpoint address to listen to for incoming requests')
+    parser.add_argument('-t', '--tooltip', default='systray-notify',
+            help='tooltip text to display')
+    return parser.parse_args()
 
 if __name__ == '__main__':
 
-    import sys
+    args = parse_cmdline_args()
     app = QtGui.QApplication(sys.argv)
 
     # test for systray functionality
@@ -131,5 +155,5 @@ if __name__ == '__main__':
 
 
     QtGui.QApplication.setQuitOnLastWindowClosed(False)
-    window = Window()
+    window = Window(args.address, args.tooltip)
     sys.exit(app.exec_())
