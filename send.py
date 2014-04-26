@@ -19,6 +19,7 @@ while cmd != 'q':
         api_msg.title = 'Nushi!'
         api_msg.body = 'I luv U'
         api_msg.icon = Api.INFO
+        #api_msg.die = True
 
         zsck.send(api_msg.SerializeToString(), zmq.NOBLOCK)
         time.sleep(1)

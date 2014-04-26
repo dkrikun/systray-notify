@@ -60,6 +60,10 @@ class Window(QtGui.QDialog):
         api_msg = Api()
         api_msg.ParseFromString(zmsg)
 
+        # check if requested to shut down
+        if api_msg.die == True:
+            QtGui.qApp.quit()
+
         # select appropriate icon to display in the system tray message
         if api_msg.icon == Api.NO:
             icon = QtGui.QSystemTrayIcon.NoIcon
