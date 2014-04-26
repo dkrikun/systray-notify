@@ -46,6 +46,9 @@ class Window(QtGui.QDialog):
 
 
     def recvMessages(self):
+        """Handle incoming api messages."""
+
+        # recv zmq message, non-blocking
         try:
             zmsg = self.zsck.recv(zmq.NOBLOCK)
         except zmq.ZMQError as e:
@@ -53,9 +56,11 @@ class Window(QtGui.QDialog):
                 raise
             return
 
+        # parse as protobuf Api, see api.proto
         api_msg = Api()
         api_msg.ParseFromString(zmsg)
 
+        # select appropriate icon to display in the system tray message
         if api_msg.icon == Api.NO:
             icon = QtGui.QSystemTrayIcon.NoIcon
         elif api_msg.icon == Api.INFO:
@@ -65,17 +70,21 @@ class Window(QtGui.QDialog):
         elif api_msg.icon == Api.CRIT:
             icon = QtGui.QSystemTrayIcon.Critical
 
-        self.showMessageText(api_msg.title, api_msg.body, icon)
-
-
-    def showMessageText(self, title, body, icon):
-        self.trayIcon.showMessage(title, body, icon, 10)
+        # display the balloon message in the system tray
+        self.showTrayMessage(api_msg.title, api_msg.body, icon)
 
 
     def messageClicked(self):
-        QtGui.QMessageBox.information(None, "Systray",
-                "Sorry, I already gave what help I could.\nMaybe you should "
-                "try asking a human?")
+        self.hideTrayMessage()
+
+    def showTrayMessage(self, title, body, icon):
+        self.trayIcon.showMessage(title, body, icon, 10)
+
+    def hideTrayMessage(self):
+        """Hides a balloon message being displayed, if there is one."""
+
+        self.trayIcon.hide()
+        self.trayIcon.show()
 
 
 
@@ -83,15 +92,16 @@ if __name__ == '__main__':
 
     import sys
 
-    app = QtGui.QApplication(sys.argv)
+    # test for systray functionality
+    systray_ok = QtGui.QSystemTrayIcon.isSystemTrayAvailable() and QtGui.QSystemTrayIcon.supportsMessages()
 
-    if not QtGui.QSystemTrayIcon.isSystemTrayAvailable():
-        QtGui.QMessageBox.critical(None, "Systray",
-                "No system tray available.")
+    if not systray_ok:
+        QtGui.QMessageBox.critical(None, "systray-notify",
+                """Could not start systray-notify because the system tray
+                messages are not supported""")
         sys.exit(1)
 
-    QtGui.QApplication.setQuitOnLastWindowClosed(False)
 
-
+    app = QtGui.QApplication(sys.argv)
     window = Window()
     sys.exit(app.exec_())
