@@ -2,7 +2,7 @@ from cx_Freeze import setup, Executable
 
 # cx_Freeze options
 buildOptions = dict(
-        packages = ['zmq'],
+        packages = ['zmq', 'zmq.backend.cython'],
         includes = 'atexit',                # required for Qt
         include_msvcr = True,               # include msvc redist.
         append_script_to_exe = True
