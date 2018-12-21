@@ -1,15 +1,17 @@
 systray-notify
 =============
 
-Tiny *microservice* which knows to display user-friendly notifications using
-the system tray.
+~Tiny *microservice* which knows to display user-friendly notifications using
+the system tray.~
+
+This is all bullshit.
 
 ### What it is good for?
 
 It is handy in situations when you have a number of UI-less applications
 working together, which may want to display user-friendly not so technical
 messages.
-Plays well with *microservice architecture* (see the [article](http://martinfowler.com/articles/microservices.html) by Martin Fowler).
+~Plays well with *microservice architecture* (see the [article](http://martinfowler.com/articles/microservices.html) by Martin Fowler).~
 
 ### API
 
